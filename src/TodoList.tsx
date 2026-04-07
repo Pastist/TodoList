@@ -1,6 +1,7 @@
 import { useState, type ChangeEvent, type KeyboardEvent } from "react";
 import type { FilterValuesType, FilterValuesTypeDate } from "./App";
 import { EditableSpan } from "./components/EditTodo/EditTodo";
+import { PromptModal } from "./components/PromptModal";
 import IconButton from '@mui/material/IconButton';
 import Delete from '@mui/icons-material/Delete';
 import Button from "@mui/material/Button";
@@ -8,6 +9,7 @@ import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
 import { ThemeSwitcher } from "./theme/ThemeSwitcher";
 import { Box, ButtonGroup, Grid } from "@mui/material";
+
 
 
 export type TaskType = {
@@ -35,6 +37,10 @@ export function TodoList(props: PropsType) {
   const [newTAskTitle, setNewTaskTitle] = useState("");
   const [error, setError] = useState<string | null>(null);
 
+  const [isPromptOpen, setIsPromptOpen] = useState(false);
+  const [promptTaskId, setPromptTaskId] = useState<string | null>(null);
+  const [promptValue, setPromptValue] = useState("");
+
   const addTask = () => {
     if (newTAskTitle.trim() === "") {
       setError("Поле не может быть пустым");
@@ -46,6 +52,7 @@ export function TodoList(props: PropsType) {
 
   const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTaskTitle(e.currentTarget.value)
+
   }
   const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     setError(null);
@@ -54,6 +61,24 @@ export function TodoList(props: PropsType) {
     }
   }
 
+
+  const openPrompt = (taskId: string, currentTitle: string) => {
+    setPromptTaskId(taskId);
+    setPromptValue(currentTitle);
+    setIsPromptOpen(true);
+  };
+
+  const closePrompt = () => {
+    setIsPromptOpen(false);
+    setPromptTaskId(null);
+  };
+
+  const confirmPrompt = (value: string) => {
+    if (promptTaskId) {
+      props.changeTaskTitle(promptTaskId, value);
+    }
+    closePrompt();
+  };
 
   const onAllClickHandler = () => props.changeFilter("all")
   const onAktiveClickHandler = () => props.changeFilter("aktive")
@@ -65,9 +90,15 @@ export function TodoList(props: PropsType) {
     <div>
       <Box
         sx={{
-          width: 600,
-          maxWidth: '100%',
-          minWidth: 320,
+          display: 'flex',
+          flexDirection: 'column',
+          //width: {
+          //  xs: '80%',
+          //  sm: '65%',
+          //  md: 'auto',
+          //},
+          minWidth: { xs: '320px', sm: '480px' },
+          maxWidth: '800px',
           overflow: 'auto',
           mx: 'auto',
           p: 2,
@@ -76,10 +107,21 @@ export function TodoList(props: PropsType) {
           backgroundColor: 'background.paper',
 
         }} >
-        <h2 style={{ display: 'flex', justifyContent: 'space-between', margin: '0px', padding: '5px 0' }} >
+        <h2 style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          margin: '0px',
+          padding: '5px 0'
+        }} >
           {props.title} {<ThemeSwitcher />}</h2>
 
-        <div style={{ boxSizing: "border-box", display: "flex", justifyContent: "center", gap: "10px", marginBottom: "10px" }}>
+        <div style={{
+          boxSizing: "border-box",
+          display: "flex",
+          justifyContent: "center",
+          gap: "10px",
+          marginBottom: "10px"
+        }}>
           <TextField
             variant={"outlined"}
             label={"Введите задачу"}
@@ -96,8 +138,24 @@ export function TodoList(props: PropsType) {
         </div>
 
 
-        <Grid sx={{ flexDirection: "column", alignItems: 'center', display: "flex", gap: "10px", whiteSpace: 'nowrap' }}>
-          <ButtonGroup variant="outlined" aria-label="Basic button group">
+        <Grid sx={{
+          flexDirection: { xs: "column", sm: "column" },
+          alignItems: 'center',
+          display: "flex",
+          gap: "10px",
+          whiteSpace: 'nowrap'
+        }}>
+          <ButtonGroup
+            variant="outlined"
+            aria-label="Basic button group"
+            sx={{
+              flexWrap: 'wrap',
+              '& .MuiButton-root': {
+                fontSize: { xs: '0.8rem', sm: '1rem' },
+                minWidth: { xs: 'auto', sm: '64px' },
+              }
+            }}
+          >
             <Button className={props.filter === "all" ? "active-filter" : ""}
               onClick={onAllClickHandler}>Все</Button>
             <Button className={props.filter === "aktive" ? "active-filter" : ""}
@@ -106,7 +164,17 @@ export function TodoList(props: PropsType) {
               onClick={onComplitedClickHandler}>Готовые</Button>
           </ButtonGroup>
 
-          <ButtonGroup variant="outlined" aria-label="Basic button group">
+          <ButtonGroup
+            variant="outlined"
+            aria-label="Basic button group"
+            sx={{
+              flexWrap: 'wrap',
+              '& .MuiButton-root': {
+                fontSize: { xs: '0.8rem', sm: '1rem' },
+                minWidth: { xs: 'auto', sm: '64px' },
+              }
+            }}
+          >
             <Button className={props.filterDate === "new" ? "active-filter" : ""}
               onClick={changeFilterDateNew}>Сначала новые</Button>
             <Button className={props.filterDate === "old" ? "active-filter" : ""}
@@ -125,11 +193,8 @@ export function TodoList(props: PropsType) {
               const onChangeTitleHandler = (newValue: string) => {
                 props.changeTaskTitle(t.id, newValue);
               }
-              const editMode = () => {
-                onChangeTitleHandler(prompt("Введите новое название задачи", t.title) || t.title);
-              }
 
-              return <div style={{
+              return <Box sx={{
                 boxSizing: "border-box",
                 display: "flex",
                 justifyContent: "center",
@@ -137,36 +202,74 @@ export function TodoList(props: PropsType) {
                 paddingTop: "8px",
                 borderWidth: "4px"
               }}>
-                <div style={{
+                <Box sx={{
                   width: "100%",
-                  padding: "4px 16px 8px 16px",
+                  padding: "4px 0px 8px 0px",
                   paddingBottom: "8px",
                   borderRadius: "4px",
                   border: "2px solid rgba(57, 78, 115, 0.12)",
                   display: "flex",
                   justifyContent: "space-between",
-                  alignItems: "center"
+                  alignItems: "center",
+                  flexWrap: { xs: "wrap", sm: "nowrap" },
+                  gap: "8px"
                 }}
                   key={t.id} className={t.completed ? "is-done" : ""}>
                   <Checkbox
                     onChange={onChangeStatusHandler}
-                    checked={t.completed} />
-                  {/*<span>{t.title}</span>*/}
-                  <div style={{ display: "flex", gap: "14px", alignItems: "baseline" }}>
+                    checked={t.completed}
+                    size="small"
+                  />
+                  <Box sx={{
+                    fontSize: { xs: "16px", sm: "20px" },
+                    flexDirection: { xs: "column", sm: "row" },
+                    display: "flex",
+                    gap: { xs: "2px", sm: "14px" },
+                    alignItems: "baseline",
+                    flex: 1,
+                    minWidth: 0
+                  }}>
                     <EditableSpan title={t.title}
                       onChange={onChangeTitleHandler} />
-                    <span style={{ fontSize: "14px" }}>
-                      {t.createdAt.toLocaleDateString()}</span>
-                  </div>
-                  <div style={{ flexDirection: "row", display: "flex", gap: "5px", justifyContent: "flex-end" }}>
-                    <Button onClick={editMode}>✏️</Button>
-                    <IconButton onClick={onRemoveHandler}><Delete /></IconButton>
-                  </div>
-                </div>
-              </div>
+                    <Box sx={{
+                      fontSize: { xs: "10px", sm: "12px" },
+                      display: { xs: "column", sm: "inline" }
+                    }}>
+                      {t.createdAt.toLocaleDateString()}
+                    </Box>
+                  </Box>
+                  <Box sx={{
+                    flexDirection: "row",
+                    display: "flex",
+                    gap: "5px",
+                    justifyContent: "flex-end",
+                    flexShrink: 0
+                  }}>
+                    <Button
+                      onClick={() => openPrompt(t.id, t.title)}
+                      size="small"
+                    >
+                      ✏️
+                    </Button>
+                    <IconButton
+                      onClick={onRemoveHandler}
+                      size="small"
+                    >
+                      <Delete />
+                    </IconButton>
+                  </Box>
+                </Box>
+              </Box>
             })
           }
         </div>
+        <PromptModal
+          open={isPromptOpen}
+          title="Введите новое название задачи"
+          defaultValue={promptValue}
+          onConfirm={confirmPrompt}
+          onCancel={closePrompt}
+        />
       </Box>
     </div>
   );

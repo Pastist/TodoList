@@ -1,9 +1,15 @@
 #root {
-  max-width: 1280px;
+  max-width: 600px;
   margin: 0 auto;
-  /*padding: 20px;*/
+  padding: 20px;
   text-align: center;
   display: flex;
+}
+
+@media (max-width: 600px) {
+  #root {
+    padding: 0px;
+  }
 }
 
 .error {
@@ -15,12 +21,11 @@
 }
 
 .active-filter {
-  background-color: rgb(209, 184, 228);
- 
+  background-color: rgba(116, 102, 123, 0.313);
 }
 
 .is-done {
   text-decoration: line-through;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 

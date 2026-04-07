@@ -105,15 +105,12 @@ function App() {
 
   return (
     <div className="App">
-      <Container style={{ 
-                          border: "2px solid black",
-                          //padding: "20px",
-                          //borderRadius: "5px",
-                          //width: "480px",
-                          //display: 'flex',
-                          width: "600px",
-                          padding: '0px',
-                          }}>
+      <Container 
+        sx={{ 
+          border: "1px solid black",
+          borderRadius: "8px",
+        }}
+      >
                             
 
       

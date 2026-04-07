@@ -4,6 +4,7 @@ import { useState, type ReactNode } from 'react';
 import { ThemeContext, type ThemeMode } from './ThemeContext';
 
 const lightTheme = createTheme({
+  
   palette: {
     mode: 'light',
     primary: {
