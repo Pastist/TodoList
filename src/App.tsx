@@ -21,11 +21,11 @@ const loadTasksFromLocalStorage = (): Array<TaskType> => {
     });
   }
   return [
-    { id: v1(), title: "CSS", completed: true, createdAt: new Date("12.09.1999") },
-    { id: v1(), title: "JS", completed: true, createdAt: new Date("12.09.2000") },
-    { id: v1(), title: "ReactJS", completed: false, createdAt: new Date("12.09.1988") },
-    { id: v1(), title: "Redux", completed: false, createdAt: new Date("12.09.1978") },
-    { id: v1(), title: "GraphQL", completed: true, createdAt: new Date("12.09.1965")}
+    { id: v1(), title: "Cesna", completed: true, createdAt: new Date("12.09.1999") },
+    { id: v1(), title: "Jag", completed: true, createdAt: new Date("12.09.2000") },
+    { id: v1(), title: "Resp", completed: false, createdAt: new Date("12.09.1988") },
+    { id: v1(), title: "Red", completed: false, createdAt: new Date("12.09.1978") },
+    { id: v1(), title: "Grappa", completed: true, createdAt: new Date("12.09.1965")}
   ];
 };
 
