@@ -9,6 +9,7 @@ import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
 import { ThemeSwitcher } from "./theme/ThemeSwitcher";
 import { Box, ButtonGroup, Grid } from "@mui/material";
+import * as React from "react";
 
 
 
@@ -90,22 +91,21 @@ export function TodoList(props: PropsType) {
     <div>
       <Box
         sx={{
-          display: 'flex',
+          //display: 'flex',
           flexDirection: 'column',
-          //width: {
-          //  xs: '80%',
-          //  sm: '65%',
-          //  md: 'auto',
-          //},
+          width: {
+            xs: '320px',
+            sm: '480px',
+            md: 'auto',
+          },
           minWidth: { xs: '320px', sm: '480px' },
-          maxWidth: '800px',
+          maxWidth: '600px',
           overflow: 'auto',
           mx: 'auto',
           p: 2,
           borderColor: 'grey.300',
           borderRadius: 2,
           backgroundColor: 'background.paper',
-
         }} >
         <h2 style={{
           display: 'flex',
@@ -116,7 +116,7 @@ export function TodoList(props: PropsType) {
           {props.title} {<ThemeSwitcher />}</h2>
 
         <div style={{
-          boxSizing: "border-box",
+          //boxSizing: "border-box",
           display: "flex",
           justifyContent: "center",
           gap: "10px",
@@ -151,8 +151,8 @@ export function TodoList(props: PropsType) {
             sx={{
               flexWrap: 'wrap',
               '& .MuiButton-root': {
-                fontSize: { xs: '0.8rem', sm: '1rem' },
-                minWidth: { xs: 'auto', sm: '64px' },
+                fontSize: { xs: '0.7rem', sm: '1rem' },
+                minWidth: { xs: '20px', sm: '45px', md: 'auto' },
               }
             }}
           >
@@ -170,8 +170,8 @@ export function TodoList(props: PropsType) {
             sx={{
               flexWrap: 'wrap',
               '& .MuiButton-root': {
-                fontSize: { xs: '0.8rem', sm: '1rem' },
-                minWidth: { xs: 'auto', sm: '64px' },
+                fontSize: { xs: '0.7rem', sm: '1rem' },
+                minWidth: { xs: '20px', sm: '45px', md: '64px' },
               }
             }}
           >
@@ -195,7 +195,7 @@ export function TodoList(props: PropsType) {
               }
 
               return <Box sx={{
-                boxSizing: "border-box",
+                //boxSizing: 'border-box',
                 display: "flex",
                 justifyContent: "center",
                 gap: "10px",
@@ -227,24 +227,33 @@ export function TodoList(props: PropsType) {
                     gap: { xs: "2px", sm: "14px" },
                     alignItems: "baseline",
                     flex: 1,
-                    minWidth: 0
-                  }}>
-                    <EditableSpan title={t.title}
+                    minWidth: 0,
+                    overflowY: "hidden"
+                    }}>
+                    <EditableSpan  title={t.title}
                       onChange={onChangeTitleHandler} />
                     <Box sx={{
                       fontSize: { xs: "10px", sm: "12px" },
                       display: { xs: "column", sm: "inline" }
+                      
                     }}>
-                      {t.createdAt.toLocaleDateString()}
+                      {/*{t.createdAt.toLocaleDateString()}*/}
                     </Box>
                   </Box>
                   <Box sx={{
                     flexDirection: "row",
                     display: "flex",
-                    gap: "5px",
+                    gap: { xs: "0px", sm: "5px" },
                     justifyContent: "flex-end",
-                    flexShrink: 0
+                    flexShrink: 0,
                   }}>
+                    <Box sx={{
+                      fontSize: { xs: "10px", sm: "12px", md: "15px" },
+                      paddingTop: { xs: "9.3px", sm: "8px", md: "6.5px" },
+                    }}>
+                      {t.createdAt.toLocaleDateString()}
+                    </Box>
+                    
                     <Button
                       onClick={() => openPrompt(t.id, t.title)}
                       size="small"

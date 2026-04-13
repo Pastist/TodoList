@@ -109,7 +109,9 @@ function App() {
         sx={{ 
           border: "1px solid black",
           borderRadius: "8px",
-        }}
+          paddingLeft: "0px",
+          paddingRight: "0px"
+  }}
       >
                             
 
