@@ -109,8 +109,8 @@ function App() {
         sx={{ 
           border: "1px solid black",
           borderRadius: "8px",
-          paddingLeft: "0px",
-          paddingRight: "0px"
+          paddingLeft: { xs: "0px", sm: "0px", md: "0px" },
+          paddingRight: { xs: "0px", sm: "0px", md: "0px" }
   }}
       >
                             

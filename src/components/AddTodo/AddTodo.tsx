@@ -32,7 +32,13 @@ export function AddTodo(props: PropsType) {
   };
 
   return (
-    <div style={{ boxSizing: "border-box", display: "flex", justifyContent: "center", gap: "10px", marginBottom: "10px" }}>
+    <div style={{ 
+          //boxSizing: "border-box",
+          display: "flex",
+          justifyContent: "center",
+          gap: "10px",
+          marginBottom: "10px"
+     }}>
       <TextField
         variant={"outlined"}
         label={"Введите задачу"}
@@ -43,8 +49,10 @@ export function AddTodo(props: PropsType) {
         error={!!error}
         size="small"
       />
-      <Button style={{ whiteSpace: 'nowrap' }} variant="contained" onClick={addTask}>+ добавить</Button>
-      {error && <div className="error-message">{error}</div>}
+          <div>
+          <Button style={{ whiteSpace: 'nowrap' }} variant="contained" onClick={addTask}>+ добавить</Button>
+          {error && <div className="error-message">{error}</div>}
+          </div>
     </div>
   );
 }

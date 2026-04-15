@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent, type KeyboardEvent } from "react";
 import type { FilterValuesType, FilterValuesTypeDate } from "./App";
 import { EditableSpan } from "./components/EditTodo/EditTodo";
-import { PromptModal } from "./components/PromptModal";
+import { PromptModal } from "./components/PromptModal/PromptModal";
 import IconButton from '@mui/material/IconButton';
 import Delete from '@mui/icons-material/Delete';
 import Button from "@mui/material/Button";
@@ -96,10 +96,10 @@ export function TodoList(props: PropsType) {
           width: {
             xs: '320px',
             sm: '480px',
-            md: 'auto',
+            md: '700px',
           },
-          minWidth: { xs: '320px', sm: '480px' },
-          maxWidth: '600px',
+          //minWidth: { xs: '320px', sm: '480px' },
+          maxWidth: '700px',
           overflow: 'auto',
           mx: 'auto',
           p: 2,
@@ -121,7 +121,7 @@ export function TodoList(props: PropsType) {
           justifyContent: "center",
           gap: "10px",
           marginBottom: "10px"
-        }}>
+          }}>
           <TextField
             variant={"outlined"}
             label={"Введите задачу"}
@@ -133,8 +133,14 @@ export function TodoList(props: PropsType) {
             size="small"
 
           />
-          <Button style={{ whiteSpace: 'nowrap' }} variant="contained" onClick={addTask}>+ добавить</Button>
-          {error && <div className="error-message">{error}</div>}
+          <Box sx={{ paddingTop: { xs: '5px', sm: '2px' } }}>
+            <Button sx={{
+              whiteSpace: 'nowrap',
+              fontSize: { xs: '10px', sm: '14px' }
+            }}
+              variant="contained" onClick={addTask}>+ добавить</Button>
+            {error && <Box className="error-message">{error}</Box>}
+          </Box>
         </div>
 
 
@@ -144,7 +150,7 @@ export function TodoList(props: PropsType) {
           display: "flex",
           gap: "10px",
           whiteSpace: 'nowrap'
-        }}>
+          }}>
           <ButtonGroup
             variant="outlined"
             aria-label="Basic button group"
@@ -201,7 +207,7 @@ export function TodoList(props: PropsType) {
                 gap: "10px",
                 paddingTop: "8px",
                 borderWidth: "4px"
-              }}>
+                }}>
                 <Box sx={{
                   width: "100%",
                   padding: "4px 0px 8px 0px",
@@ -213,7 +219,7 @@ export function TodoList(props: PropsType) {
                   alignItems: "center",
                   flexWrap: { xs: "wrap", sm: "nowrap" },
                   gap: "8px"
-                }}
+                  }}
                   key={t.id} className={t.completed ? "is-done" : ""}>
                   <Checkbox
                     onChange={onChangeStatusHandler}
@@ -230,13 +236,13 @@ export function TodoList(props: PropsType) {
                     minWidth: 0,
                     overflowY: "hidden"
                     }}>
-                    <EditableSpan  title={t.title}
+                    <EditableSpan title={t.title}
                       onChange={onChangeTitleHandler} />
                     <Box sx={{
                       fontSize: { xs: "10px", sm: "12px" },
                       display: { xs: "column", sm: "inline" }
-                      
-                    }}>
+
+                      }}>
                       {/*{t.createdAt.toLocaleDateString()}*/}
                     </Box>
                   </Box>
@@ -246,24 +252,25 @@ export function TodoList(props: PropsType) {
                     gap: { xs: "0px", sm: "5px" },
                     justifyContent: "flex-end",
                     flexShrink: 0,
-                  }}>
+                    }}>
                     <Box sx={{
                       fontSize: { xs: "10px", sm: "12px", md: "15px" },
                       paddingTop: { xs: "9.3px", sm: "8px", md: "6.5px" },
-                    }}>
+                      }}>
                       {t.createdAt.toLocaleDateString()}
                     </Box>
-                    
+
                     <Button
                       onClick={() => openPrompt(t.id, t.title)}
                       size="small"
-                    >
+                      sx={{ minWidth: { xs: "24px", sm: "44px", md: "64px" } }}
+                     >
                       ✏️
                     </Button>
                     <IconButton
                       onClick={onRemoveHandler}
                       size="small"
-                    >
+                     >
                       <Delete />
                     </IconButton>
                   </Box>
